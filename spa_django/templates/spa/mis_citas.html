@@ -1,61 +1,50 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <h2>Mis citas</h2>
 
-<table class="table">
-
-<tr>
-
-<th>Servicio</th>
-
-<th>Empleado</th>
-
-<th>Fecha</th>
-
-<th>Hora</th>
-
-<th>Estado</th>
-
-</tr>
-
-{% for cita in citas %}
-
-<tr>
-
-<td>{{ cita.servicio.nombre }}</td>
-
-<td>{{ cita.empleado.nombre }}</td>
-
-<td>{{ cita.fecha }}</td>
-
-<td>{{ cita.hora }}</td>
-
-<td>{{ cita.estado }}</td>
-
-</tr>
-
-{% empty %}
-
-<tr>
-
-<td colspan="5">
-
-No tienes citas registradas
-
-</td>
-
-</tr>
-
-{% endfor %}
-
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Servicio</th>
+            <th>Empleado</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Estado</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cita in citas %}
+        <tr>
+            <td>{{ cita.servicio.nombre }}</td>
+            <td>
+                {% if cita.empleado %}
+                    {{ cita.empleado.nombre }}
+                {% else %}
+                    Sin asignar
+                {% endif %}
+            </td>
+            <td>{{ cita.fecha }}</td>
+            <td>{{ cita.hora }}</td>
+            <td>{{ cita.estado }}</td>
+            <td>
+                {% if cita.estado == 'pendiente' or cita.estado == 'confirmada' %}
+                    <a href="{% url 'cancelar_cita' cita.id %}" class="btn btn-danger btn-sm">
+                        Cancelar
+                    </a>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No tienes citas registradas.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 
-<a href="/cita/nueva/" class="btn btn-success">
-
-Nueva cita
-
-</a>
-
+<a href="{% url 'crear_cita' %}" class="btn btn-success">Nueva cita</a>
 {% endblock %}

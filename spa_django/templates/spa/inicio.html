@@ -5,8 +5,12 @@
 <p>Tu espacio de bienestar y cuidado personal.</p>
 
 {% if user.is_authenticated %}
-    <a href="/cita/nueva/" class="btn btn-primary">Reservar cita</a>
-    <a href="/mis-citas/" class="btn btn-success">Ver mis citas</a>
+    <a href="{% url 'crear_cita' %}" class="btn btn-primary">Reservar cita</a>
+    <a href="{% url 'mis_citas' %}" class="btn btn-success">Ver mis citas</a>
+
+    {% if user.is_staff %}
+        <a href="{% url 'lista_servicios' %}" class="btn btn-dark">Administrar servicios</a>
+    {% endif %}
 {% else %}
     <a href="/accounts/login/" class="btn btn-primary">Iniciar sesión</a>
     <a href="/usuarios/registro/" class="btn btn-success">Registrarse</a>

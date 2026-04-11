@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Administración de servicios</h2>
+
+<a href="{% url 'crear_servicio' %}" class="btn btn-success mb-3">Nuevo servicio</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Duración</th>
+            <th>Precio</th>
+            <th>Activo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for servicio in servicios %}
+        <tr>
+            <td>{{ servicio.nombre }}</td>
+            <td>{{ servicio.duracion_minutos }} min</td>
+            <td>₡{{ servicio.precio }}</td>
+            <td>{% if servicio.activo %}Sí{% else %}No{% endif %}</td>
+            <td>
+                <a href="{% url 'editar_servicio' servicio.id %}" class="btn btn-primary btn-sm">Editar</a>
+                <a href="{% url 'eliminar_servicio' servicio.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No hay servicios registrados.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
