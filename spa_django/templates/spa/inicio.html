@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Bienvenido a Spa Relax</h1>
+<p>Tu espacio de bienestar y cuidado personal.</p>
+
+{% if user.is_authenticated %}
+    <a href="/cita/nueva/" class="btn btn-primary">Reservar cita</a>
+    <a href="/mis-citas/" class="btn btn-success">Ver mis citas</a>
+{% else %}
+    <a href="/accounts/login/" class="btn btn-primary">Iniciar sesión</a>
+    <a href="/usuarios/registro/" class="btn btn-success">Registrarse</a>
+{% endif %}
+{% endblock %}

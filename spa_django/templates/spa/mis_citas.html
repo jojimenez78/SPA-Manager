@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Mis citas</h2>
+
+<table class="table">
+
+<tr>
+
+<th>Servicio</th>
+
+<th>Empleado</th>
+
+<th>Fecha</th>
+
+<th>Hora</th>
+
+<th>Estado</th>
+
+</tr>
+
+{% for cita in citas %}
+
+<tr>
+
+<td>{{ cita.servicio.nombre }}</td>
+
+<td>{{ cita.empleado.nombre }}</td>
+
+<td>{{ cita.fecha }}</td>
+
+<td>{{ cita.hora }}</td>
+
+<td>{{ cita.estado }}</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="5">
+
+No tienes citas registradas
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<a href="/cita/nueva/" class="btn btn-success">
+
+Nueva cita
+
+</a>
+
+{% endblock %}
