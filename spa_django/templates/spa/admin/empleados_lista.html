@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Administración de empleados</h2>
+
+<a href="{% url 'crear_empleado' %}" class="btn btn-success mb-3">
+Nuevo empleado
+</a>
+
+<table class="table table-bordered">
+
+<tr>
+<th>Nombre</th>
+<th>Especialidad</th>
+<th>Activo</th>
+<th>Acciones</th>
+</tr>
+
+{% for empleado in empleados %}
+
+<tr>
+<td>{{ empleado.nombre }}</td>
+<td>{{ empleado.especialidad }}</td>
+<td>{{ empleado.activo }}</td>
+
+<td>
+
+<a href="{% url 'editar_empleado' empleado.id %}" class="btn btn-primary btn-sm">
+Editar
+</a>
+
+<a href="{% url 'eliminar_empleado' empleado.id %}" class="btn btn-danger btn-sm">
+Eliminar
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}
