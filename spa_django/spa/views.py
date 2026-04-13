@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -40,6 +42,39 @@ def cancelar_cita(request, cita_id):
         cita.save()
 
     return redirect('mis_citas')
+
+
+@staff_member_required
+def dashboard_admin(request):
+    hoy = date.today()
+
+    total_servicios = Servicio.objects.count()
+    total_empleados = Empleado.objects.count()
+    total_citas = Cita.objects.count()
+    citas_hoy = Cita.objects.filter(fecha=hoy).count()
+
+    citas_pendientes = Cita.objects.filter(estado='pendiente').count()
+    citas_confirmadas = Cita.objects.filter(estado='confirmada').count()
+    citas_completadas = Cita.objects.filter(estado='completada').count()
+    citas_canceladas = Cita.objects.filter(estado='cancelada').count()
+
+    ultimas_citas = Cita.objects.select_related(
+        'cliente', 'servicio', 'empleado'
+    ).order_by('-fecha', '-hora')[:5]
+
+    context = {
+        'total_servicios': total_servicios,
+        'total_empleados': total_empleados,
+        'total_citas': total_citas,
+        'citas_hoy': citas_hoy,
+        'citas_pendientes': citas_pendientes,
+        'citas_confirmadas': citas_confirmadas,
+        'citas_completadas': citas_completadas,
+        'citas_canceladas': citas_canceladas,
+        'ultimas_citas': ultimas_citas,
+    }
+
+    return render(request, 'spa/admin/dashboard.html', context)
 
 
 @staff_member_required

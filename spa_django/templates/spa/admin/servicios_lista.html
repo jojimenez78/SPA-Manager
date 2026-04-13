@@ -1,37 +1,59 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Administración de servicios</h2>
+<div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+    <div>
+        <h2 class="page-title mb-1">Administración de servicios</h2>
+        <p class="text-muted mb-0">Gestiona los tratamientos y servicios disponibles del spa.</p>
+    </div>
+    <a href="{% url 'crear_servicio' %}" class="btn btn-spa-primary">Nuevo servicio</a>
+</div>
 
-<a href="{% url 'crear_servicio' %}" class="btn btn-success mb-3">Nuevo servicio</a>
-
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Duración</th>
-            <th>Precio</th>
-            <th>Activo</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for servicio in servicios %}
-        <tr>
-            <td>{{ servicio.nombre }}</td>
-            <td>{{ servicio.duracion_minutos }} min</td>
-            <td>₡{{ servicio.precio }}</td>
-            <td>{% if servicio.activo %}Sí{% else %}No{% endif %}</td>
-            <td>
-                <a href="{% url 'editar_servicio' servicio.id %}" class="btn btn-primary btn-sm">Editar</a>
-                <a href="{% url 'eliminar_servicio' servicio.id %}" class="btn btn-danger btn-sm">Eliminar</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5">No hay servicios registrados.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="spa-card p-3 p-md-4">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Duración</th>
+                    <th>Precio</th>
+                    <th>Activo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for servicio in servicios %}
+                <tr>
+                    <td>{{ servicio.nombre }}</td>
+                    <td>{{ servicio.duracion_minutos }} min</td>
+                    <td>₡{{ servicio.precio }}</td>
+                    <td>
+                        {% if servicio.activo %}
+                            <span class="badge text-bg-success">Activo</span>
+                        {% else %}
+                            <span class="badge text-bg-secondary">Inactivo</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="{% url 'editar_servicio' servicio.id %}" class="btn btn-sm btn-outline-primary">
+                                Editar
+                            </a>
+                            <a href="{% url 'eliminar_servicio' servicio.id %}" class="btn btn-sm btn-outline-danger">
+                                Eliminar
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-4 text-muted">
+                        No hay servicios registrados.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

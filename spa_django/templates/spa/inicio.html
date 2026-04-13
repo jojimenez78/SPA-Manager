@@ -17,7 +17,7 @@
                     <a href="{% url 'mis_citas' %}" class="btn btn-lg btn-soft">Ver mis citas</a>
 
                     {% if user.is_staff %}
-                        <a href="{% url 'lista_servicios' %}" class="btn btn-lg btn-spa-secondary">Panel administrativo</a>
+                        <a href="{% url 'dashboard_admin' %}" class="btn btn-lg btn-spa-secondary">Ir al dashboard</a>
                     {% endif %}
                 </div>
             {% else %}
