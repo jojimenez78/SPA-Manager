@@ -2,64 +2,203 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spa Relax</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --spa-bg: #f8f5f0;
+            --spa-card: #ffffff;
+            --spa-primary: #7a9b8e;
+            --spa-primary-dark: #5f7f72;
+            --spa-accent: #d8c3a5;
+            --spa-text: #2f3a36;
+            --spa-muted: #6c757d;
+            --spa-border: #e7e1d8;
+        }
+
+        body {
+            background-color: var(--spa-bg);
+            color: var(--spa-text);
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar-spa {
+            background: linear-gradient(90deg, #6f8f82, #8aa89c);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-spa-primary {
+            background-color: var(--spa-primary);
+            border-color: var(--spa-primary);
+            color: white;
+        }
+
+        .btn-spa-primary:hover {
+            background-color: var(--spa-primary-dark);
+            border-color: var(--spa-primary-dark);
+            color: white;
+        }
+
+        .btn-spa-secondary {
+            background-color: var(--spa-accent);
+            border-color: var(--spa-accent);
+            color: #3a3127;
+        }
+
+        .btn-spa-secondary:hover {
+            background-color: #cdb392;
+            border-color: #cdb392;
+            color: #3a3127;
+        }
+
+        .btn-soft {
+            background-color: #eef4f1;
+            border: 1px solid #d5e3dc;
+            color: var(--spa-text);
+        }
+
+        .btn-soft:hover {
+            background-color: #dfece6;
+            color: var(--spa-text);
+        }
+
+        .spa-card {
+            background-color: var(--spa-card);
+            border: 1px solid var(--spa-border);
+            border-radius: 18px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, rgba(122,155,142,0.15), rgba(216,195,165,0.20));
+            border: 1px solid var(--spa-border);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        }
+
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .feature-box {
+            background: white;
+            border: 1px solid var(--spa-border);
+            border-radius: 18px;
+            padding: 1.5rem;
+            height: 100%;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+        }
+
+        .table {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .table thead {
+            background-color: #edf3f0;
+        }
+
+        .page-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .form-card {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .footer-spa {
+            margin-top: 4rem;
+            padding: 2rem 0;
+            color: var(--spa-muted);
+            font-size: 0.95rem;
+        }
+
+        .badge-soft {
+            background-color: #eef4f1;
+            color: #466055;
+            padding: 0.5rem 0.8rem;
+            border-radius: 999px;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            margin-left: 0.35rem;
+        }
+    </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark navbar-spa">
     <div class="container">
         <a class="navbar-brand" href="{% url 'inicio' %}">Spa Relax</a>
 
-        <div class="d-flex flex-wrap gap-2">
+        <div class="d-flex flex-wrap gap-2 mt-2 mt-lg-0">
             {% if user.is_authenticated %}
-                <a class="btn btn-outline-light btn-sm" href="{% url 'crear_cita' %}">
+                <a class="btn btn-sm btn-light nav-btn" href="{% url 'crear_cita' %}">
                     Reservar cita
                 </a>
 
-                <a class="btn btn-outline-light btn-sm" href="{% url 'mis_citas' %}">
+                <a class="btn btn-sm btn-outline-light nav-btn" href="{% url 'mis_citas' %}">
                     Mis citas
                 </a>
 
                 {% if user.is_staff %}
-                    <a class="btn btn-warning btn-sm" href="{% url 'lista_servicios' %}">
+                    <a class="btn btn-sm btn-warning nav-btn" href="{% url 'lista_servicios' %}">
                         Servicios
                     </a>
 
-                    <a class="btn btn-warning btn-sm" href="{% url 'lista_empleados' %}">
+                    <a class="btn btn-sm btn-warning nav-btn" href="{% url 'lista_empleados' %}">
                         Empleados
                     </a>
 
-                    <a class="btn btn-warning btn-sm" href="{% url 'lista_citas_admin' %}">
+                    <a class="btn btn-sm btn-warning nav-btn" href="{% url 'lista_citas_admin' %}">
                         Citas
                     </a>
                 {% endif %}
 
-                <span class="text-white align-self-center ms-2">
+                <span class="text-white align-self-center ms-2 me-1">
                     Hola, {{ user.username }}
                 </span>
 
-                <a class="btn btn-danger btn-sm" href="{% url 'logout' %}">
+                <a class="btn btn-sm btn-danger nav-btn" href="{% url 'logout' %}">
                     Salir
                 </a>
             {% else %}
-                <a class="btn btn-success btn-sm" href="{% url 'login' %}">
-                    Login
+                <a class="btn btn-sm btn-light nav-btn" href="{% url 'login' %}">
+                    Iniciar sesión
                 </a>
 
-                <a class="btn btn-primary btn-sm" href="{% url 'registro' %}">
-                    Registro
+                <a class="btn btn-sm btn-spa-secondary nav-btn" href="{% url 'registro' %}">
+                    Registrarse
                 </a>
             {% endif %}
         </div>
     </div>
 </nav>
 
-<div class="container mt-4">
+<main class="container py-4">
     {% block content %}
     {% endblock %}
-</div>
+</main>
+
+<footer class="footer-spa">
+    <div class="container text-center">
+        <p class="mb-1"><strong>Spa Relax</strong> · Bienestar, armonía y cuidado personal.</p>
+        <p class="mb-0">Sistema de reservas y gestión administrativa.</p>
+    </div>
+</footer>
 
 </body>
 </html>

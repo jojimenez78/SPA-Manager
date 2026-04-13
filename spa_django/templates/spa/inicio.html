@@ -1,22 +1,98 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-4">
-    <h1>Bienvenido a Spa Relax</h1>
-    <p>Tu espacio de bienestar y cuidado personal.</p>
+<section class="hero-section mb-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge-soft">Experiencia premium de bienestar</span>
+            <h1 class="display-5 fw-bold mt-3 mb-3">Relájate, renueva tu energía y reserva con facilidad</h1>
+            <p class="lead mb-4">
+                En Spa Relax te ofrecemos un espacio diseñado para el descanso, el cuidado personal y la tranquilidad.
+                Gestiona tus citas de forma rápida y disfruta una experiencia moderna y profesional.
+            </p>
 
-    {% if user.is_authenticated %}
-        <a href="{% url 'crear_cita' %}" class="btn btn-primary">Reservar cita</a>
-        <a href="{% url 'mis_citas' %}" class="btn btn-success">Ver mis citas</a>
+            {% if user.is_authenticated %}
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{% url 'crear_cita' %}" class="btn btn-lg btn-spa-primary">Reservar ahora</a>
+                    <a href="{% url 'mis_citas' %}" class="btn btn-lg btn-soft">Ver mis citas</a>
 
-        {% if user.is_staff %}
-            <a href="{% url 'lista_servicios' %}" class="btn btn-dark">Administrar servicios</a>
-            <a href="{% url 'lista_empleados' %}" class="btn btn-dark">Administrar empleados</a>
-            <a href="{% url 'lista_citas_admin' %}" class="btn btn-dark">Administrar citas</a>
-        {% endif %}
-    {% else %}
-        <a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a>
-        <a href="{% url 'registro' %}" class="btn btn-success">Registrarse</a>
-    {% endif %}
-</div>
+                    {% if user.is_staff %}
+                        <a href="{% url 'lista_servicios' %}" class="btn btn-lg btn-spa-secondary">Panel administrativo</a>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{% url 'login' %}" class="btn btn-lg btn-spa-primary">Iniciar sesión</a>
+                    <a href="{% url 'registro' %}" class="btn btn-lg btn-spa-secondary">Crear cuenta</a>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-5 mt-4 mt-lg-0">
+            <div class="spa-card p-4">
+                <h4 class="fw-bold mb-3">Nuestros beneficios</h4>
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-3">✨ Reserva de citas en línea de forma sencilla</li>
+                    <li class="mb-3">🌿 Atención profesional y ambiente relajante</li>
+                    <li class="mb-3">🕒 Gestión organizada de horarios y servicios</li>
+                    <li class="mb-0">💆 Experiencia moderna, cómoda y segura</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mb-5">
+    <h2 class="section-title">Servicios destacados</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="feature-box">
+                <h4 class="fw-bold">Masajes relajantes</h4>
+                <p class="mb-0">
+                    Ideal para reducir estrés, liberar tensión muscular y recuperar una sensación profunda de bienestar.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <h4 class="fw-bold">Faciales revitalizantes</h4>
+                <p class="mb-0">
+                    Tratamientos pensados para hidratar, limpiar y rejuvenecer la piel con atención especializada.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <h4 class="fw-bold">Aromaterapia</h4>
+                <p class="mb-0">
+                    Vive una experiencia sensorial con aceites esenciales que promueven calma, equilibrio y descanso.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h2 class="section-title">¿Por qué elegir Spa Relax?</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="feature-box">
+                <h5 class="fw-bold">Atención personalizada</h5>
+                <p class="mb-0">Cada cita está pensada para adaptarse a las necesidades y preferencias del cliente.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <h5 class="fw-bold">Reserva rápida</h5>
+                <p class="mb-0">Nuestro sistema permite agendar, revisar y administrar citas con una experiencia simple y clara.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <h5 class="fw-bold">Ambiente profesional</h5>
+                <p class="mb-0">Combinamos confort, orden y estética para brindar una experiencia moderna y confiable.</p>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
