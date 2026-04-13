@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Administración de citas</h2>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Servicio</th>
+                <th>Empleado</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cita in citas %}
+            <tr>
+                <td>{{ cita.cliente.username }}</td>
+                <td>{{ cita.servicio.nombre }}</td>
+                <td>
+                    {% if cita.empleado %}
+                        {{ cita.empleado.nombre }}
+                    {% else %}
+                        Sin asignar
+                    {% endif %}
+                </td>
+                <td>{{ cita.fecha }}</td>
+                <td>{{ cita.hora }}</td>
+                <td>{{ cita.estado }}</td>
+                <td>
+                    <a href="{% url 'cambiar_estado_cita' cita.id 'confirmada' %}" class="btn btn-primary btn-sm">Confirmar</a>
+                    <a href="{% url 'cambiar_estado_cita' cita.id 'completada' %}" class="btn btn-success btn-sm">Completar</a>
+                    <a href="{% url 'cambiar_estado_cita' cita.id 'cancelada' %}" class="btn btn-warning btn-sm">Cancelar</a>
+                    <a href="{% url 'eliminar_cita_admin' cita.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">No hay citas registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

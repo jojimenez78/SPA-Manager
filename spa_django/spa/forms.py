@@ -1,4 +1,7 @@
+from datetime import date, time
+
 from django import forms
+
 from .models import Cita, Servicio, Empleado
 
 
@@ -18,6 +21,22 @@ class CitaForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['servicio'].queryset = Servicio.objects.filter(activo=True)
         self.fields['empleado'].queryset = Empleado.objects.filter(activo=True)
+
+    def clean_fecha(self):
+        fecha = self.cleaned_data.get('fecha')
+
+        if fecha and fecha < date.today():
+            raise forms.ValidationError("No puedes reservar citas en fechas pasadas.")
+
+        return fecha
+
+    def clean_hora(self):
+        hora = self.cleaned_data.get('hora')
+
+        if hora and (hora < time(8, 0) or hora > time(18, 0)):
+            raise forms.ValidationError("El horario permitido es de 8:00 AM a 6:00 PM.")
+
+        return hora
 
     def clean(self):
         cleaned_data = super().clean()

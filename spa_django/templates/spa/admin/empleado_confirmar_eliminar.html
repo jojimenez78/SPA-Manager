@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Eliminar empleado</h2>
+
+    {% if tiene_citas_activas %}
+        <div class="alert alert-warning">
+            No puedes eliminar a <strong>{{ empleado.nombre }}</strong> porque tiene citas pendientes o confirmadas.
+        </div>
+
+        <a href="{% url 'lista_empleados' %}" class="btn btn-secondary">Volver</a>
+    {% else %}
+        <p>¿Seguro que deseas eliminar a <strong>{{ empleado.nombre }}</strong>?</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <a href="{% url 'lista_empleados' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}

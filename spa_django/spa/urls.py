@@ -1,7 +1,10 @@
 from django.urls import path
 from .views import (
+    cambiar_estado_cita,
+    eliminar_cita_admin,
     inicio,
     crear_cita,
+    lista_citas_admin,
     mis_citas,
     cancelar_cita,
 
@@ -31,6 +34,8 @@ urlpatterns = [
 path('admin-empleados/nuevo/', crear_empleado, name='crear_empleado'),
 path('admin-empleados/editar/<int:empleado_id>/', editar_empleado, name='editar_empleado'),
 path('admin-empleados/eliminar/<int:empleado_id>/', eliminar_empleado, name='eliminar_empleado'),
-
+path('admin-citas/', lista_citas_admin, name='lista_citas_admin'),
+path('admin-citas/estado/<int:cita_id>/<str:nuevo_estado>/', cambiar_estado_cita, name='cambiar_estado_cita'),
+path('admin-citas/eliminar/<int:cita_id>/', eliminar_cita_admin, name='eliminar_cita_admin'),
     
 ]

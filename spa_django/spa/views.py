@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 
 from .forms import CitaForm
-from .models import Cita, Servicio
-from .models import Empleado
+from .models import Cita, Servicio, Empleado
+
 
 def inicio(request):
     return render(request, 'spa/inicio.html')
@@ -95,6 +95,7 @@ def eliminar_servicio(request, servicio_id):
 
     return render(request, 'spa/admin/servicio_confirmar_eliminar.html', {'servicio': servicio})
 
+
 @staff_member_required
 def lista_empleados(request):
     empleados = Empleado.objects.all().order_by('nombre')
@@ -103,7 +104,6 @@ def lista_empleados(request):
 
 @staff_member_required
 def crear_empleado(request):
-
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
         especialidad = request.POST.get('especialidad')
@@ -122,7 +122,6 @@ def crear_empleado(request):
 
 @staff_member_required
 def editar_empleado(request, empleado_id):
-
     empleado = get_object_or_404(Empleado, id=empleado_id)
 
     if request.method == 'POST':
@@ -138,11 +137,53 @@ def editar_empleado(request, empleado_id):
 
 @staff_member_required
 def eliminar_empleado(request, empleado_id):
-
     empleado = get_object_or_404(Empleado, id=empleado_id)
 
+    tiene_citas_activas = Cita.objects.filter(
+        empleado=empleado,
+        estado__in=['pendiente', 'confirmada']
+    ).exists()
+
     if request.method == 'POST':
-        empleado.delete()
+        if not tiene_citas_activas:
+            empleado.delete()
         return redirect('lista_empleados')
 
-    return render(request, 'spa/admin/empleado_confirmar_eliminar.html', {'empleado': empleado})
+    return render(
+        request,
+        'spa/admin/empleado_confirmar_eliminar.html',
+        {
+            'empleado': empleado,
+            'tiene_citas_activas': tiene_citas_activas
+        }
+    )
+
+
+@staff_member_required
+def lista_citas_admin(request):
+    citas = Cita.objects.all().order_by('-fecha', '-hora')
+    return render(request, 'spa/admin/citas_lista.html', {'citas': citas})
+
+
+@staff_member_required
+def cambiar_estado_cita(request, cita_id, nuevo_estado):
+    cita = get_object_or_404(Cita, id=cita_id)
+
+    estados_validos = ['pendiente', 'confirmada', 'completada', 'cancelada']
+
+    if nuevo_estado in estados_validos:
+        cita.estado = nuevo_estado
+        cita.save()
+
+    return redirect('lista_citas_admin')
+
+
+@staff_member_required
+def eliminar_cita_admin(request, cita_id):
+    cita = get_object_or_404(Cita, id=cita_id)
+
+    if request.method == 'POST':
+        cita.delete()
+        return redirect('lista_citas_admin')
+
+    return render(request, 'spa/admin/cita_confirmar_eliminar.html', {'cita': cita})

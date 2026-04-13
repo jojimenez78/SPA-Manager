@@ -1,18 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Bienvenido a Spa Relax</h1>
-<p>Tu espacio de bienestar y cuidado personal.</p>
+<div class="container mt-4">
+    <h1>Bienvenido a Spa Relax</h1>
+    <p>Tu espacio de bienestar y cuidado personal.</p>
 
-{% if user.is_authenticated %}
-    <a href="{% url 'crear_cita' %}" class="btn btn-primary">Reservar cita</a>
-    <a href="{% url 'mis_citas' %}" class="btn btn-success">Ver mis citas</a>
+    {% if user.is_authenticated %}
+        <a href="{% url 'crear_cita' %}" class="btn btn-primary">Reservar cita</a>
+        <a href="{% url 'mis_citas' %}" class="btn btn-success">Ver mis citas</a>
 
-    {% if user.is_staff %}
-        <a href="{% url 'lista_servicios' %}" class="btn btn-dark">Administrar servicios</a>
+        {% if user.is_staff %}
+            <a href="{% url 'lista_servicios' %}" class="btn btn-dark">Administrar servicios</a>
+            <a href="{% url 'lista_empleados' %}" class="btn btn-dark">Administrar empleados</a>
+            <a href="{% url 'lista_citas_admin' %}" class="btn btn-dark">Administrar citas</a>
+        {% endif %}
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a>
+        <a href="{% url 'registro' %}" class="btn btn-success">Registrarse</a>
     {% endif %}
-{% else %}
-    <a href="/accounts/login/" class="btn btn-primary">Iniciar sesión</a>
-    <a href="/usuarios/registro/" class="btn btn-success">Registrarse</a>
-{% endif %}
+</div>
 {% endblock %}
