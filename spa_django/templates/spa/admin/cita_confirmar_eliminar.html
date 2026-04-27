@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Cita | Spa Relax{% endblock %}
+
+{% block content %}
+<section class="spa-section">
+    <div class="container">
+        <div class="spa-card form-card">
+            <div class="mb-4">
+                <h1 class="page-title text-danger mb-2">Eliminar cita</h1>
+                <p class="spa-subtitle mb-0">Esta acción quitará la reserva seleccionada del panel administrativo.</p>
+            </div>
+
+            <div class="alert alert-warning">
+                ¿Seguro que deseas eliminar la cita de <strong>{{ cita.cliente.username }}</strong>
+                para el servicio <strong>{{ cita.servicio.nombre }}</strong>?
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                    <a href="{% url 'lista_citas_admin' %}" class="btn btn-soft">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

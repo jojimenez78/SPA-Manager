@@ -1,37 +1,28 @@
 {% extends 'base.html' %}
 
+{% block title %}Eliminar Servicio | Spa Relax{% endblock %}
+
 {% block content %}
-<h2>Administración de servicios</h2>
+<section class="spa-section">
+    <div class="container">
+        <div class="spa-card form-card">
+            <div class="mb-4">
+                <h1 class="page-title text-danger mb-2">Eliminar servicio</h1>
+                <p class="spa-subtitle mb-0">Confirma esta acción solo si realmente deseas retirar el servicio del sistema.</p>
+            </div>
 
-<a href="{% url 'crear_servicio' %}" class="btn btn-success mb-3">Nuevo servicio</a>
+            <div class="alert alert-warning">
+                ¿Seguro que deseas eliminar el servicio <strong>{{ servicio.nombre }}</strong>?
+            </div>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Duración</th>
-            <th>Precio</th>
-            <th>Activo</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for servicio in servicios %}
-        <tr>
-            <td>{{ servicio.nombre }}</td>
-            <td>{{ servicio.duracion_minutos }} min</td>
-            <td>₡{{ servicio.precio }}</td>
-            <td>{% if servicio.activo %}Sí{% else %}No{% endif %}</td>
-            <td>
-                <a href="{% url 'editar_servicio' servicio.id %}" class="btn btn-primary btn-sm">Editar</a>
-                <a href="{% url 'eliminar_servicio' servicio.id %}" class="btn btn-danger btn-sm">Eliminar</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5">No hay servicios registrados.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                    <a href="{% url 'lista_servicios' %}" class="btn btn-soft">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
 {% endblock %}

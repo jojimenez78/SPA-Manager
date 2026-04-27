@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import (
     inicio,
+    servicios_publicos,
     crear_cita,
     mis_citas,
     cancelar_cita,
@@ -20,6 +21,7 @@ from .views import (
 
 urlpatterns = [
     path('', inicio, name='inicio'),
+    path('servicios/', servicios_publicos, name='servicios_publicos'),
     path('cita/nueva/', crear_cita, name='crear_cita'),
     path('mis-citas/', mis_citas, name='mis_citas'),
     path('cita/cancelar/<int:cita_id>/', cancelar_cita, name='cancelar_cita'),

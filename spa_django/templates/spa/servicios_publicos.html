@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Servicios | Spa Relax{% endblock %}
+
+{% block content %}
+<section class="spa-section">
+    <div class="container">
+        <div class="row align-items-end g-4 mb-5">
+            <div class="col-lg-7">
+                <p class="text-uppercase small fw-bold text-secondary mb-2">Catálogo público</p>
+                <h1 class="page-title mb-3">Servicios activos del spa</h1>
+                <p class="spa-subtitle mb-0">
+                    Explora tratamientos disponibles en una vitrina pensada para inspirar confianza y facilitar la reserva.
+                </p>
+            </div>
+            <div class="col-lg-5 text-lg-end">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'crear_cita' %}" class="btn btn-spa-primary">Reservar una cita</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-spa-primary">Iniciar sesión para reservar</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row g-4">
+            {% for servicio in servicios %}
+                <div class="col-md-6 col-xl-4">
+                    <article class="spa-card h-100 p-0 overflow-hidden">
+                        <img
+                            src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=1200&q=80"
+                            alt="{{ servicio.nombre }}"
+                            style="width: 100%; height: 240px; object-fit: cover;"
+                        >
+                        <div class="p-4">
+                            <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                                <div>
+                                    <h2 class="h4 mb-2">{{ servicio.nombre }}</h2>
+                                    <p class="text-muted mb-0">{{ servicio.duracion_minutos }} minutos</p>
+                                </div>
+                                <span class="badge text-bg-light border">CRC {{ servicio.precio }}</span>
+                            </div>
+                            <p class="spa-subtitle mb-4">{{ servicio.descripcion }}</p>
+
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'crear_cita' %}" class="btn btn-spa-primary w-100">Reservar este servicio</a>
+                            {% else %}
+                                <a href="{% url 'login' %}" class="btn btn-soft w-100">Iniciar sesión</a>
+                            {% endif %}
+                        </div>
+                    </article>
+                </div>
+            {% empty %}
+                <div class="col-12">
+                    <div class="spa-card text-center">
+                        <h2 class="h3 mb-3">No hay servicios activos publicados</h2>
+                        <p class="spa-subtitle mb-0">Cuando el administrador active servicios, aparecerán aquí automáticamente.</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

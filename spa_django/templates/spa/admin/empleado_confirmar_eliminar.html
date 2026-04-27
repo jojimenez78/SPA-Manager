@@ -1,23 +1,35 @@
 {% extends 'base.html' %}
 
+{% block title %}Eliminar Empleado | Spa Relax{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
-    <h2>Eliminar empleado</h2>
+<section class="spa-section">
+    <div class="container">
+        <div class="spa-card form-card">
+            <div class="mb-4">
+                <h1 class="page-title text-danger mb-2">Eliminar empleado</h1>
+                <p class="spa-subtitle mb-0">Revisa primero si el colaborador tiene citas activas antes de retirarlo del sistema.</p>
+            </div>
 
-    {% if tiene_citas_activas %}
-        <div class="alert alert-warning">
-            No puedes eliminar a <strong>{{ empleado.nombre }}</strong> porque tiene citas pendientes o confirmadas.
+            {% if tiene_citas_activas %}
+                <div class="alert alert-warning">
+                    No puedes eliminar a <strong>{{ empleado.nombre }}</strong> porque tiene citas pendientes o confirmadas.
+                </div>
+                <a href="{% url 'lista_empleados' %}" class="btn btn-soft">Volver</a>
+            {% else %}
+                <div class="alert alert-warning">
+                    ¿Seguro que deseas eliminar a <strong>{{ empleado.nombre }}</strong>?
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                        <a href="{% url 'lista_empleados' %}" class="btn btn-soft">Cancelar</a>
+                    </div>
+                </form>
+            {% endif %}
         </div>
-
-        <a href="{% url 'lista_empleados' %}" class="btn btn-secondary">Volver</a>
-    {% else %}
-        <p>¿Seguro que deseas eliminar a <strong>{{ empleado.nombre }}</strong>?</p>
-
-        <form method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Eliminar</button>
-            <a href="{% url 'lista_empleados' %}" class="btn btn-secondary">Cancelar</a>
-        </form>
-    {% endif %}
-</div>
+    </div>
+</section>
 {% endblock %}

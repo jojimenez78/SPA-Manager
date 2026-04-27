@@ -1,133 +1,134 @@
 {% extends 'base.html' %}
 
+{% block title %}Dashboard Administrativo | Spa Relax{% endblock %}
+
 {% block content %}
-<div class="mb-4">
-    <h2 class="page-title mb-1">Dashboard administrativo</h2>
-    <p class="text-muted mb-0">Resumen general del funcionamiento del spa y accesos rápidos de gestión.</p>
-</div>
+<section class="spa-section">
+    <div class="container">
+        <div class="mb-4">
+            <h1 class="page-title mb-2">Dashboard administrativo</h1>
+            <p class="spa-subtitle mb-0">Métricas clave, estados de citas y accesos rápidos para gestionar la operación diaria del spa.</p>
+        </div>
 
-<div class="row g-4 mb-4">
-    <div class="col-md-6 col-xl-3">
-        <div class="spa-card p-4 h-100">
-            <p class="text-muted mb-2">Servicios</p>
-            <h2 class="fw-bold mb-0">{{ total_servicios }}</h2>
+        <div class="row g-4 mb-4">
+            <div class="col-md-6 col-xl-3">
+                <div class="spa-card h-100">
+                    <p class="text-muted text-uppercase small fw-bold mb-2">Servicios</p>
+                    <h2 class="display-6 fw-bold mb-0">{{ total_servicios }}</h2>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="spa-card h-100">
+                    <p class="text-muted text-uppercase small fw-bold mb-2">Empleados</p>
+                    <h2 class="display-6 fw-bold mb-0">{{ total_empleados }}</h2>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="spa-card h-100">
+                    <p class="text-muted text-uppercase small fw-bold mb-2">Citas totales</p>
+                    <h2 class="display-6 fw-bold mb-0">{{ total_citas }}</h2>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="spa-card h-100">
+                    <p class="text-muted text-uppercase small fw-bold mb-2">Citas de hoy</p>
+                    <h2 class="display-6 fw-bold mb-0">{{ citas_hoy }}</h2>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="col-md-6 col-xl-3">
-        <div class="spa-card p-4 h-100">
-            <p class="text-muted mb-2">Empleados</p>
-            <h2 class="fw-bold mb-0">{{ total_empleados }}</h2>
-        </div>
-    </div>
-    <div class="col-md-6 col-xl-3">
-        <div class="spa-card p-4 h-100">
-            <p class="text-muted mb-2">Citas totales</p>
-            <h2 class="fw-bold mb-0">{{ total_citas }}</h2>
-        </div>
-    </div>
-    <div class="col-md-6 col-xl-3">
-        <div class="spa-card p-4 h-100">
-            <p class="text-muted mb-2">Citas para hoy</p>
-            <h2 class="fw-bold mb-0">{{ citas_hoy }}</h2>
-        </div>
-    </div>
-</div>
 
-<div class="row g-4 mb-4">
-    <div class="col-md-6 col-xl-3">
-        <div class="spa-card p-4 h-100 border-start border-4 border-warning">
-            <p class="text-muted mb-2">Pendientes</p>
-            <h3 class="fw-bold mb-0">{{ citas_pendientes }}</h3>
+        <div class="row g-4 mb-4">
+            <div class="col-md-6 col-xl-3">
+                <div class="spa-card h-100 border-start border-4 border-warning">
+                    <p class="text-muted text-uppercase small fw-bold mb-2">Pendientes</p>
+                    <h3 class="fw-bold mb-0">{{ citas_pendientes }}</h3>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="spa-card h-100 border-start border-4 border-primary">
+                    <p class="text-muted text-uppercase small fw-bold mb-2">Confirmadas</p>
+                    <h3 class="fw-bold mb-0">{{ citas_confirmadas }}</h3>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="spa-card h-100 border-start border-4 border-success">
+                    <p class="text-muted text-uppercase small fw-bold mb-2">Completadas</p>
+                    <h3 class="fw-bold mb-0">{{ citas_completadas }}</h3>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="spa-card h-100 border-start border-4 border-danger">
+                    <p class="text-muted text-uppercase small fw-bold mb-2">Canceladas</p>
+                    <h3 class="fw-bold mb-0">{{ citas_canceladas }}</h3>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="col-md-6 col-xl-3">
-        <div class="spa-card p-4 h-100 border-start border-4 border-primary">
-            <p class="text-muted mb-2">Confirmadas</p>
-            <h3 class="fw-bold mb-0">{{ citas_confirmadas }}</h3>
-        </div>
-    </div>
-    <div class="col-md-6 col-xl-3">
-        <div class="spa-card p-4 h-100 border-start border-4 border-success">
-            <p class="text-muted mb-2">Completadas</p>
-            <h3 class="fw-bold mb-0">{{ citas_completadas }}</h3>
-        </div>
-    </div>
-    <div class="col-md-6 col-xl-3">
-        <div class="spa-card p-4 h-100 border-start border-4 border-danger">
-            <p class="text-muted mb-2">Canceladas</p>
-            <h3 class="fw-bold mb-0">{{ citas_canceladas }}</h3>
-        </div>
-    </div>
-</div>
 
-<div class="row g-4 mb-4">
-    <div class="col-lg-4">
-        <div class="spa-card p-4 h-100">
-            <h4 class="fw-bold mb-3">Accesos rápidos</h4>
-            <div class="d-grid gap-2">
-                <a href="{% url 'lista_servicios' %}" class="btn btn-spa-primary">Gestionar servicios</a>
-                <a href="{% url 'lista_empleados' %}" class="btn btn-soft">Gestionar empleados</a>
-                <a href="{% url 'lista_citas_admin' %}" class="btn btn-soft">Gestionar citas</a>
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="spa-card h-100">
+                    <h2 class="h3 mb-4">Accesos rápidos</h2>
+                    <div class="d-grid gap-3">
+                        <a href="{% url 'lista_servicios' %}" class="btn btn-spa-primary">Gestionar servicios</a>
+                        <a href="{% url 'lista_empleados' %}" class="btn btn-soft">Gestionar empleados</a>
+                        <a href="{% url 'lista_citas_admin' %}" class="btn btn-soft">Gestionar citas</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="spa-card h-100">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+                        <div>
+                            <h2 class="h3 mb-1">Últimas 5 citas</h2>
+                            <p class="text-muted mb-0">Vista rápida de la actividad más reciente.</p>
+                        </div>
+                        <a href="{% url 'lista_citas_admin' %}" class="btn btn-soft">Ver todas</a>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Servicio</th>
+                                    <th>Empleado</th>
+                                    <th>Fecha</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cita in ultimas_citas %}
+                                    <tr>
+                                        <td>{{ cita.cliente.username }}</td>
+                                        <td>{{ cita.servicio.nombre }}</td>
+                                        <td>{{ cita.empleado.nombre|default:"Sin asignar" }}</td>
+                                        <td>{{ cita.fecha|date:"d/m/Y" }} {{ cita.hora|time:"H:i" }}</td>
+                                        <td>
+                                            {% if cita.estado == 'pendiente' %}
+                                                <span class="badge text-bg-warning">Pendiente</span>
+                                            {% elif cita.estado == 'confirmada' %}
+                                                <span class="badge text-bg-primary">Confirmada</span>
+                                            {% elif cita.estado == 'completada' %}
+                                                <span class="badge text-bg-success">Completada</span>
+                                            {% elif cita.estado == 'cancelada' %}
+                                                <span class="badge text-bg-danger">Cancelada</span>
+                                            {% else %}
+                                                <span class="badge text-bg-secondary">{{ cita.estado }}</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="5" class="text-center py-5 text-muted">No hay citas registradas todavía.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="col-lg-8">
-        <div class="spa-card p-4 h-100">
-            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-                <h4 class="fw-bold mb-2 mb-md-0">Últimas citas registradas</h4>
-                <a href="{% url 'lista_citas_admin' %}" class="btn btn-sm btn-outline-secondary">Ver todas</a>
-            </div>
-
-            <div class="table-responsive">
-                <table class="table align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th>Cliente</th>
-                            <th>Servicio</th>
-                            <th>Empleado</th>
-                            <th>Fecha</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for cita in ultimas_citas %}
-                        <tr>
-                            <td>{{ cita.cliente.username }}</td>
-                            <td>{{ cita.servicio.nombre }}</td>
-                            <td>
-                                {% if cita.empleado %}
-                                    {{ cita.empleado.nombre }}
-                                {% else %}
-                                    Sin asignar
-                                {% endif %}
-                            </td>
-                            <td>{{ cita.fecha }} {{ cita.hora }}</td>
-                            <td>
-                                {% if cita.estado == 'pendiente' %}
-                                    <span class="badge text-bg-warning">Pendiente</span>
-                                {% elif cita.estado == 'confirmada' %}
-                                    <span class="badge text-bg-primary">Confirmada</span>
-                                {% elif cita.estado == 'completada' %}
-                                    <span class="badge text-bg-success">Completada</span>
-                                {% elif cita.estado == 'cancelada' %}
-                                    <span class="badge text-bg-danger">Cancelada</span>
-                                {% else %}
-                                    <span class="badge text-bg-secondary">{{ cita.estado }}</span>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="5" class="text-center py-4 text-muted">
-                                No hay citas registradas.
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+</section>
 {% endblock %}

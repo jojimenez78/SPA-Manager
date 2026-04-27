@@ -1,15 +1,22 @@
 from datetime import date
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CitaForm
-from .models import Cita, Servicio, Empleado
+from .models import Cita, Empleado, Servicio
 
 
 def inicio(request):
-    return render(request, 'spa/inicio.html')
+    servicios_destacados = Servicio.objects.filter(activo=True).order_by('nombre')[:3]
+    return render(request, 'spa/inicio.html', {'servicios_destacados': servicios_destacados})
+
+
+def servicios_publicos(request):
+    servicios = Servicio.objects.filter(activo=True).order_by('nombre')
+    return render(request, 'spa/servicios_publicos.html', {'servicios': servicios})
 
 
 @login_required
@@ -20,6 +27,11 @@ def crear_cita(request):
             cita = form.save(commit=False)
             cita.cliente = request.user
             cita.save()
+
+            messages.success(
+                request,
+                "Tu cita fue registrada correctamente."
+            )
             return redirect('mis_citas')
     else:
         form = CitaForm()
@@ -40,6 +52,11 @@ def cancelar_cita(request, cita_id):
     if cita.estado in ['pendiente', 'confirmada']:
         cita.estado = 'cancelada'
         cita.save()
+
+        messages.warning(
+            request,
+            "La cita fue cancelada correctamente."
+        )
 
     return redirect('mis_citas')
 
@@ -90,7 +107,7 @@ def crear_servicio(request):
         descripcion = request.POST.get('descripcion')
         duracion_minutos = request.POST.get('duracion_minutos')
         precio = request.POST.get('precio')
-        activo = True if request.POST.get('activo') == 'on' else False
+        activo = request.POST.get('activo') == 'on'
 
         Servicio.objects.create(
             nombre=nombre,
@@ -98,6 +115,11 @@ def crear_servicio(request):
             duracion_minutos=duracion_minutos,
             precio=precio,
             activo=activo
+        )
+
+        messages.success(
+            request,
+            "Servicio creado correctamente."
         )
         return redirect('lista_servicios')
 
@@ -113,8 +135,13 @@ def editar_servicio(request, servicio_id):
         servicio.descripcion = request.POST.get('descripcion')
         servicio.duracion_minutos = request.POST.get('duracion_minutos')
         servicio.precio = request.POST.get('precio')
-        servicio.activo = True if request.POST.get('activo') == 'on' else False
+        servicio.activo = request.POST.get('activo') == 'on'
         servicio.save()
+
+        messages.success(
+            request,
+            "Servicio actualizado correctamente."
+        )
         return redirect('lista_servicios')
 
     return render(request, 'spa/admin/servicio_form.html', {'servicio': servicio})
@@ -126,6 +153,11 @@ def eliminar_servicio(request, servicio_id):
 
     if request.method == 'POST':
         servicio.delete()
+
+        messages.error(
+            request,
+            "Servicio eliminado correctamente."
+        )
         return redirect('lista_servicios')
 
     return render(request, 'spa/admin/servicio_confirmar_eliminar.html', {'servicio': servicio})
@@ -142,7 +174,7 @@ def crear_empleado(request):
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
         especialidad = request.POST.get('especialidad')
-        activo = True if request.POST.get('activo') == 'on' else False
+        activo = request.POST.get('activo') == 'on'
 
         Empleado.objects.create(
             nombre=nombre,
@@ -150,6 +182,10 @@ def crear_empleado(request):
             activo=activo
         )
 
+        messages.success(
+            request,
+            "Empleado creado correctamente."
+        )
         return redirect('lista_empleados')
 
     return render(request, 'spa/admin/empleado_form.html')
@@ -162,9 +198,13 @@ def editar_empleado(request, empleado_id):
     if request.method == 'POST':
         empleado.nombre = request.POST.get('nombre')
         empleado.especialidad = request.POST.get('especialidad')
-        empleado.activo = True if request.POST.get('activo') == 'on' else False
+        empleado.activo = request.POST.get('activo') == 'on'
         empleado.save()
 
+        messages.success(
+            request,
+            "Empleado actualizado correctamente."
+        )
         return redirect('lista_empleados')
 
     return render(request, 'spa/admin/empleado_form.html', {'empleado': empleado})
@@ -180,8 +220,18 @@ def eliminar_empleado(request, empleado_id):
     ).exists()
 
     if request.method == 'POST':
-        if not tiene_citas_activas:
+        if tiene_citas_activas:
+            messages.warning(
+                request,
+                "No puedes eliminar este empleado porque tiene citas activas."
+            )
+        else:
             empleado.delete()
+            messages.error(
+                request,
+                "Empleado eliminado correctamente."
+            )
+
         return redirect('lista_empleados')
 
     return render(
@@ -196,7 +246,9 @@ def eliminar_empleado(request, empleado_id):
 
 @staff_member_required
 def lista_citas_admin(request):
-    citas = Cita.objects.all().order_by('-fecha', '-hora')
+    citas = Cita.objects.select_related(
+        'cliente', 'servicio', 'empleado'
+    ).order_by('-fecha', '-hora')
     return render(request, 'spa/admin/citas_lista.html', {'citas': citas})
 
 
@@ -210,6 +262,11 @@ def cambiar_estado_cita(request, cita_id, nuevo_estado):
         cita.estado = nuevo_estado
         cita.save()
 
+        messages.success(
+            request,
+            "Estado de la cita actualizado correctamente."
+        )
+
     return redirect('lista_citas_admin')
 
 
@@ -219,6 +276,11 @@ def eliminar_cita_admin(request, cita_id):
 
     if request.method == 'POST':
         cita.delete()
+
+        messages.error(
+            request,
+            "Cita eliminada correctamente."
+        )
         return redirect('lista_citas_admin')
 
     return render(request, 'spa/admin/cita_confirmar_eliminar.html', {'cita': cita})

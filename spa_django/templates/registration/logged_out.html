@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Sesión Cerrada | Spa Relax{% endblock %}
+
+{% block content %}
+<section class="spa-section">
+    <div class="container">
+        <div class="spa-card form-card text-center">
+            <p class="text-uppercase small fw-bold text-secondary mb-2">Hasta pronto</p>
+            <h1 class="page-title mb-3">Tu sesión se cerró correctamente</h1>
+            <p class="spa-subtitle mb-4">
+                Gracias por visitar Spa Relax. Puedes volver al inicio o iniciar sesión nuevamente cuando lo necesites.
+            </p>
+
+            <div class="d-flex justify-content-center flex-wrap gap-3">
+                <a href="{% url 'inicio' %}" class="btn btn-soft">Volver al inicio</a>
+                <a href="{% url 'login' %}" class="btn btn-spa-primary">Iniciar sesión otra vez</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

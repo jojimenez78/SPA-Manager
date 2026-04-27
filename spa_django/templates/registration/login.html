@@ -1,11 +1,65 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<h2>Iniciar sesión</h2>
+{% block title %}Iniciar Sesión | Spa Relax{% endblock %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-primary">Entrar</button>
-</form>
+{% block extra_css %}
+<style>
+    .auth-hero {
+        min-height: 82vh;
+        display: flex;
+        align-items: center;
+        background:
+            linear-gradient(110deg, rgba(8, 23, 36, 0.82), rgba(8, 23, 36, 0.35)),
+            url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1600&q=80');
+        background-size: cover;
+        background-position: center;
+    }
+
+    .auth-card {
+        max-width: 460px;
+        margin-left: auto;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="auth-hero">
+    <div class="container">
+        <div class="auth-card spa-card">
+            <p class="text-uppercase small fw-bold text-secondary mb-2">Acceso clientes y administración</p>
+            <h1 class="page-title mb-2">Iniciar sesión</h1>
+            <p class="spa-subtitle mb-4">Accede para reservar citas, revisar tu historial o gestionar el panel del spa.</p>
+
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    Usuario o contraseña incorrectos. Revisa tus datos e inténtalo nuevamente.
+                </div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                {% if next %}
+                    <input type="hidden" name="next" value="{{ next }}">
+                {% endif %}
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Usuario</label>
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Contraseña</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+
+                <button class="btn btn-spa-dark w-100">Iniciar sesión</button>
+            </form>
+
+            <div class="text-center mt-4">
+                <span class="text-muted">¿Aún no tienes cuenta?</span>
+                <a href="{% url 'registro' %}" class="fw-semibold text-decoration-none">Crear cuenta</a>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

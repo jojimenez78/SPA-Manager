@@ -1,21 +1,105 @@
 {% extends 'base.html' %}
 
+{% block title %}Reservar Cita | Spa Relax{% endblock %}
+
 {% block content %}
+<section class="spa-section">
+    <div class="container">
+        <div class="row g-4 align-items-start">
+            <div class="col-lg-5">
+                <div class="spa-card h-100">
+                    <p class="text-uppercase small fw-bold text-secondary mb-2">Reserva guiada</p>
+                    <h1 class="page-title mb-3">Agenda tu cita con una experiencia clara y moderna.</h1>
+                    <p class="spa-subtitle mb-4">
+                        Selecciona un servicio activo, el especialista disponible y el horario que mejor funcione para ti.
+                        El sistema valida fechas pasadas, horario permitido y conflictos de agenda.
+                    </p>
 
-<h2>Reservar cita</h2>
+                    <div class="d-grid gap-3">
+                        <div class="p-3 rounded-4" style="background: rgba(18, 48, 71, 0.05);">
+                            <strong class="d-block mb-1">Horario disponible</strong>
+                            <span class="text-muted">De 8:00 AM a 6:00 PM.</span>
+                        </div>
+                        <div class="p-3 rounded-4" style="background: rgba(18, 48, 71, 0.05);">
+                            <strong class="d-block mb-1">Fechas válidas</strong>
+                            <span class="text-muted">Solo se aceptan reservas desde hoy en adelante.</span>
+                        </div>
+                        <div class="p-3 rounded-4" style="background: rgba(18, 48, 71, 0.05);">
+                            <strong class="d-block mb-1">Conflictos de agenda</strong>
+                            <span class="text-muted">Se bloquean citas duplicadas para el mismo empleado, fecha y hora.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<form method="post">
+            <div class="col-lg-7">
+                <div class="spa-card form-card">
+                    <div class="mb-4">
+                        <h2 class="page-title mb-2">Nueva cita</h2>
+                        <p class="spa-subtitle mb-0">Completa el formulario para confirmar tu próxima visita al spa.</p>
+                    </div>
 
-    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
-    {{ form.as_p }}
+                    <form method="post" novalidate>
+                        {% csrf_token %}
 
-    <button class="btn btn-primary">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="{{ form.servicio.id_for_label }}">Servicio</label>
+                                {{ form.servicio }}
+                                {% for error in form.servicio.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
 
-        Guardar cita
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="{{ form.empleado.id_for_label }}">Especialista</label>
+                                {{ form.empleado }}
+                                {% for error in form.empleado.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
 
-    </button>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="{{ form.fecha.id_for_label }}">Fecha</label>
+                                {{ form.fecha }}
+                                {% for error in form.fecha.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
 
-</form>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="{{ form.hora.id_for_label }}">Hora</label>
+                                {{ form.hora }}
+                                {% for error in form.hora.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
 
+                            <div class="col-12">
+                                <label class="form-label fw-semibold" for="{{ form.notas.id_for_label }}">Notas</label>
+                                {{ form.notas }}
+                                {% for error in form.notas.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2 mt-4">
+                            <button type="submit" class="btn btn-spa-primary">Guardar cita</button>
+                            <a href="{% url 'mis_citas' %}" class="btn btn-soft">Ver mis citas</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
