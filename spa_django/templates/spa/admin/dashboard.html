@@ -2,131 +2,367 @@
 
 {% block title %}Dashboard Administrativo | Spa Relax{% endblock %}
 
+{% block extra_css %}
+<style>
+    .dashboard-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+        gap: 1.25rem;
+        margin-bottom: 1.35rem;
+    }
+
+    .dashboard-hero-main {
+        padding: 2rem;
+        border-radius: 22px;
+        background:
+            linear-gradient(115deg, rgba(11, 33, 50, 0.96), rgba(18, 48, 71, 0.82)),
+            url("https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1400&q=80");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        box-shadow: var(--spa-shadow);
+    }
+
+    .dashboard-hero-main .page-title,
+    .dashboard-hero-main .spa-subtitle {
+        color: white;
+    }
+
+    .dashboard-hero-main .spa-subtitle {
+        max-width: 720px;
+        opacity: 0.84;
+    }
+
+    .dashboard-health {
+        display: grid;
+        gap: 0.85rem;
+    }
+
+    .dashboard-health-item {
+        padding: 1rem;
+        border-radius: 18px;
+        background: rgba(255, 253, 248, 0.96);
+        border: 1px solid var(--spa-border);
+        box-shadow: 0 14px 34px rgba(17, 34, 51, 0.09);
+    }
+
+    .dashboard-health-item span,
+    .metric-card span,
+    .status-card span {
+        color: var(--spa-muted);
+        display: block;
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .dashboard-health-item strong {
+        display: block;
+        color: var(--spa-navy);
+        font-size: 1.55rem;
+        margin-top: 0.15rem;
+    }
+
+    .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .metric-card,
+    .status-card,
+    .quick-module {
+        border-radius: 20px;
+        background: rgba(255, 253, 248, 0.96);
+        border: 1px solid var(--spa-border);
+        box-shadow: 0 16px 38px rgba(17, 34, 51, 0.09);
+    }
+
+    .metric-card {
+        padding: 1.25rem;
+        min-height: 150px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .metric-card strong {
+        color: var(--spa-navy);
+        display: block;
+        font-size: 2.35rem;
+        line-height: 1;
+        margin: 0.8rem 0 0.35rem;
+    }
+
+    .metric-card p,
+    .quick-module p {
+        color: var(--spa-muted);
+        margin: 0;
+        font-size: 0.92rem;
+    }
+
+    .status-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .status-card {
+        padding: 1.1rem;
+        border-left: 5px solid rgba(18, 48, 71, 0.18);
+    }
+
+    .status-card strong {
+        color: var(--spa-navy);
+        display: block;
+        font-size: 1.85rem;
+        line-height: 1;
+        margin-top: 0.65rem;
+    }
+
+    .status-warning {
+        border-left-color: #d9a31e;
+    }
+
+    .status-primary {
+        border-left-color: #4474c5;
+    }
+
+    .status-success {
+        border-left-color: #32875b;
+    }
+
+    .status-danger {
+        border-left-color: #be4b49;
+    }
+
+    .quick-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .quick-module {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        justify-content: space-between;
+        min-height: 190px;
+        padding: 1.25rem;
+    }
+
+    .quick-module h2 {
+        color: var(--spa-navy);
+        font-size: 1.12rem;
+        font-weight: 800;
+        margin: 0 0 0.35rem;
+    }
+
+    .quick-module .btn {
+        width: 100%;
+    }
+
+    .dashboard-table-title {
+        color: var(--spa-navy);
+        font-size: 1.25rem;
+        font-weight: 800;
+        margin: 0;
+    }
+
+    @media (max-width: 1199px) {
+        .metric-grid,
+        .status-grid,
+        .quick-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 991px) {
+        .dashboard-hero {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 575px) {
+        .metric-grid,
+        .status-grid,
+        .quick-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <section class="spa-section">
     <div class="container">
-        <div class="mb-4">
-            <h1 class="page-title mb-2">Dashboard administrativo</h1>
-            <p class="spa-subtitle mb-0">Métricas clave, estados de citas y accesos rápidos para gestionar la operación diaria del spa.</p>
-        </div>
+        <div class="dashboard-hero">
+            <div class="dashboard-hero-main">
+                <p class="admin-eyebrow mb-2">Panel administrativo</p>
+                <h1 class="page-title mb-3">Dashboard operativo</h1>
+                <p class="spa-subtitle mb-4">
+                    Supervisa citas, usuarios, servicios y personal desde una vista clara para tomar decisiones rápidas durante el día.
+                </p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{% url 'lista_citas_admin' %}" class="btn btn-spa-primary">Revisar citas</a>
+                    <a href="{% url 'crear_servicio' %}" class="btn btn-spa-outline-light">Nuevo servicio</a>
+                </div>
+            </div>
 
-        <div class="row g-4 mb-4">
-            <div class="col-md-6 col-xl-3">
-                <div class="spa-card h-100">
-                    <p class="text-muted text-uppercase small fw-bold mb-2">Servicios</p>
-                    <h2 class="display-6 fw-bold mb-0">{{ total_servicios }}</h2>
+            <div class="dashboard-health">
+                <div class="dashboard-health-item">
+                    <span>Citas activas</span>
+                    <strong>{{ citas_activas }}</strong>
                 </div>
-            </div>
-            <div class="col-md-6 col-xl-3">
-                <div class="spa-card h-100">
-                    <p class="text-muted text-uppercase small fw-bold mb-2">Empleados</p>
-                    <h2 class="display-6 fw-bold mb-0">{{ total_empleados }}</h2>
+                <div class="dashboard-health-item">
+                    <span>Citas de hoy</span>
+                    <strong>{{ citas_hoy }}</strong>
                 </div>
-            </div>
-            <div class="col-md-6 col-xl-3">
-                <div class="spa-card h-100">
-                    <p class="text-muted text-uppercase small fw-bold mb-2">Citas totales</p>
-                    <h2 class="display-6 fw-bold mb-0">{{ total_citas }}</h2>
-                </div>
-            </div>
-            <div class="col-md-6 col-xl-3">
-                <div class="spa-card h-100">
-                    <p class="text-muted text-uppercase small fw-bold mb-2">Citas de hoy</p>
-                    <h2 class="display-6 fw-bold mb-0">{{ citas_hoy }}</h2>
+                <div class="dashboard-health-item">
+                    <span>Administradores</span>
+                    <strong>{{ total_administradores }}</strong>
                 </div>
             </div>
         </div>
 
-        <div class="row g-4 mb-4">
-            <div class="col-md-6 col-xl-3">
-                <div class="spa-card h-100 border-start border-4 border-warning">
-                    <p class="text-muted text-uppercase small fw-bold mb-2">Pendientes</p>
-                    <h3 class="fw-bold mb-0">{{ citas_pendientes }}</h3>
+        <div class="metric-grid">
+            <article class="metric-card">
+                <span>Servicios</span>
+                <div>
+                    <strong>{{ total_servicios }}</strong>
+                    <p>{{ total_servicios_activos }} activos publicados</p>
                 </div>
-            </div>
-            <div class="col-md-6 col-xl-3">
-                <div class="spa-card h-100 border-start border-4 border-primary">
-                    <p class="text-muted text-uppercase small fw-bold mb-2">Confirmadas</p>
-                    <h3 class="fw-bold mb-0">{{ citas_confirmadas }}</h3>
+            </article>
+            <article class="metric-card">
+                <span>Empleados</span>
+                <div>
+                    <strong>{{ total_empleados }}</strong>
+                    <p>{{ total_empleados_activos }} disponibles para agenda</p>
                 </div>
-            </div>
-            <div class="col-md-6 col-xl-3">
-                <div class="spa-card h-100 border-start border-4 border-success">
-                    <p class="text-muted text-uppercase small fw-bold mb-2">Completadas</p>
-                    <h3 class="fw-bold mb-0">{{ citas_completadas }}</h3>
+            </article>
+            <article class="metric-card">
+                <span>Usuarios</span>
+                <div>
+                    <strong>{{ total_usuarios }}</strong>
+                    <p>{{ total_usuarios_activos }} cuentas activas</p>
                 </div>
-            </div>
-            <div class="col-md-6 col-xl-3">
-                <div class="spa-card h-100 border-start border-4 border-danger">
-                    <p class="text-muted text-uppercase small fw-bold mb-2">Canceladas</p>
-                    <h3 class="fw-bold mb-0">{{ citas_canceladas }}</h3>
+            </article>
+            <article class="metric-card">
+                <span>Citas totales</span>
+                <div>
+                    <strong>{{ total_citas }}</strong>
+                    <p>Historial completo de reservas</p>
                 </div>
-            </div>
+            </article>
         </div>
 
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <div class="spa-card h-100">
-                    <h2 class="h3 mb-4">Accesos rápidos</h2>
-                    <div class="d-grid gap-3">
-                        <a href="{% url 'lista_servicios' %}" class="btn btn-spa-primary">Gestionar servicios</a>
-                        <a href="{% url 'lista_empleados' %}" class="btn btn-soft">Gestionar empleados</a>
-                        <a href="{% url 'lista_citas_admin' %}" class="btn btn-soft">Gestionar citas</a>
-                    </div>
+        <div class="status-grid">
+            <article class="status-card status-warning">
+                <span>Pendientes</span>
+                <strong>{{ citas_pendientes }}</strong>
+            </article>
+            <article class="status-card status-primary">
+                <span>Confirmadas</span>
+                <strong>{{ citas_confirmadas }}</strong>
+            </article>
+            <article class="status-card status-success">
+                <span>Completadas</span>
+                <strong>{{ citas_completadas }}</strong>
+            </article>
+            <article class="status-card status-danger">
+                <span>Canceladas</span>
+                <strong>{{ citas_canceladas }}</strong>
+            </article>
+        </div>
+
+        <div class="quick-grid">
+            <article class="quick-module">
+                <div>
+                    <h2>Usuarios</h2>
+                    <p>Administra perfiles, permisos, contacto y redes sociales.</p>
                 </div>
+                <a href="{% url 'lista_usuarios' %}" class="btn btn-soft">Gestionar usuarios</a>
+            </article>
+            <article class="quick-module">
+                <div>
+                    <h2>Servicios</h2>
+                    <p>Actualiza catálogo, precios, duración y disponibilidad.</p>
+                </div>
+                <a href="{% url 'lista_servicios' %}" class="btn btn-soft">Gestionar servicios</a>
+            </article>
+            <article class="quick-module">
+                <div>
+                    <h2>Empleados</h2>
+                    <p>Mantén activo el personal que atiende tratamientos.</p>
+                </div>
+                <a href="{% url 'lista_empleados' %}" class="btn btn-soft">Gestionar empleados</a>
+            </article>
+            <article class="quick-module">
+                <div>
+                    <h2>Citas</h2>
+                    <p>Confirma, completa, cancela o elimina reservas.</p>
+                </div>
+                <a href="{% url 'lista_citas_admin' %}" class="btn btn-spa-primary">Gestionar citas</a>
+            </article>
+        </div>
+
+        <div class="admin-panel admin-table-card">
+            <div class="admin-panel-header">
+                <div>
+                    <h2 class="dashboard-table-title">Últimas 5 citas</h2>
+                    <p class="text-muted mb-0">Actividad reciente de la agenda del spa.</p>
+                </div>
+                <a href="{% url 'lista_citas_admin' %}" class="btn btn-soft">Ver todas</a>
             </div>
 
-            <div class="col-lg-8">
-                <div class="spa-card h-100">
-                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
-                        <div>
-                            <h2 class="h3 mb-1">Últimas 5 citas</h2>
-                            <p class="text-muted mb-0">Vista rápida de la actividad más reciente.</p>
-                        </div>
-                        <a href="{% url 'lista_citas_admin' %}" class="btn btn-soft">Ver todas</a>
-                    </div>
-
-                    <div class="table-responsive">
-                        <table class="table align-middle">
-                            <thead>
-                                <tr>
-                                    <th>Cliente</th>
-                                    <th>Servicio</th>
-                                    <th>Empleado</th>
-                                    <th>Fecha</th>
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for cita in ultimas_citas %}
-                                    <tr>
-                                        <td>{{ cita.cliente.username }}</td>
-                                        <td>{{ cita.servicio.nombre }}</td>
-                                        <td>{{ cita.empleado.nombre|default:"Sin asignar" }}</td>
-                                        <td>{{ cita.fecha|date:"d/m/Y" }} {{ cita.hora|time:"H:i" }}</td>
-                                        <td>
-                                            {% if cita.estado == 'pendiente' %}
-                                                <span class="badge text-bg-warning">Pendiente</span>
-                                            {% elif cita.estado == 'confirmada' %}
-                                                <span class="badge text-bg-primary">Confirmada</span>
-                                            {% elif cita.estado == 'completada' %}
-                                                <span class="badge text-bg-success">Completada</span>
-                                            {% elif cita.estado == 'cancelada' %}
-                                                <span class="badge text-bg-danger">Cancelada</span>
-                                            {% else %}
-                                                <span class="badge text-bg-secondary">{{ cita.estado }}</span>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% empty %}
-                                    <tr>
-                                        <td colspan="5" class="text-center py-5 text-muted">No hay citas registradas todavía.</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Servicio</th>
+                            <th>Empleado</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cita in ultimas_citas %}
+                            <tr>
+                                <td><strong>{{ cita.cliente.username }}</strong></td>
+                                <td>{{ cita.servicio.nombre }}</td>
+                                <td>{{ cita.empleado.nombre|default:"Sin asignar" }}</td>
+                                <td>{{ cita.fecha|date:"d/m/Y" }} {{ cita.hora|time:"H:i" }}</td>
+                                <td>
+                                    {% if cita.estado == 'pendiente' %}
+                                        <span class="badge text-bg-warning">Pendiente</span>
+                                    {% elif cita.estado == 'confirmada' %}
+                                        <span class="badge text-bg-primary">Confirmada</span>
+                                    {% elif cita.estado == 'completada' %}
+                                        <span class="badge text-bg-success">Completada</span>
+                                    {% elif cita.estado == 'cancelada' %}
+                                        <span class="badge text-bg-danger">Cancelada</span>
+                                    {% else %}
+                                        <span class="badge text-bg-secondary">{{ cita.estado }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5">
+                                    <div class="admin-empty-state">
+                                        <strong>No hay citas registradas todavía.</strong>
+                                        Cuando entren reservas, aparecerán aquí automáticamente.
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

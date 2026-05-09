@@ -5,15 +5,23 @@
 {% block content %}
 <section class="spa-section">
     <div class="container">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div class="admin-page-header">
             <div>
-                <h1 class="page-title mb-2">Administración de empleados</h1>
+                <p class="admin-eyebrow mb-2">Administración</p>
+                <h1 class="page-title mb-2">Empleados</h1>
                 <p class="spa-subtitle mb-0">Mantén actualizado el personal disponible para atender citas y tratamientos.</p>
             </div>
             <a href="{% url 'crear_empleado' %}" class="btn btn-spa-primary">Nuevo empleado</a>
         </div>
 
-        <div class="spa-card">
+        <div class="admin-panel admin-table-card">
+            <div class="admin-panel-header">
+                <div>
+                    <h2 class="h5 fw-bold mb-1">Equipo disponible</h2>
+                    <p class="text-muted mb-0">Especialidades y estado operativo del personal.</p>
+                </div>
+            </div>
+
             <div class="table-responsive">
                 <table class="table align-middle">
                     <thead>
@@ -37,7 +45,7 @@
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <div class="d-flex flex-wrap gap-2">
+                                    <div class="admin-actions">
                                         <a href="{% url 'editar_empleado' empleado.id %}" class="btn btn-sm btn-outline-primary">Editar</a>
                                         <a href="{% url 'eliminar_empleado' empleado.id %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
                                     </div>
@@ -45,7 +53,12 @@
                             </tr>
                         {% empty %}
                             <tr>
-                                <td colspan="4" class="text-center py-5 text-muted">No hay empleados registrados.</td>
+                                <td colspan="4">
+                                    <div class="admin-empty-state">
+                                        <strong>No hay empleados registrados.</strong>
+                                        Agrega personal para asignarlo a las citas.
+                                    </div>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

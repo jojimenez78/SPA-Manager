@@ -17,6 +17,10 @@ from .views import (
     lista_citas_admin,
     cambiar_estado_cita,
     eliminar_cita_admin,
+    lista_usuarios,
+    crear_usuario,
+    editar_usuario,
+    eliminar_usuario,
 )
 
 urlpatterns = [
@@ -41,4 +45,9 @@ urlpatterns = [
     path('admin-citas/', lista_citas_admin, name='lista_citas_admin'),
     path('admin-citas/estado/<int:cita_id>/<str:nuevo_estado>/', cambiar_estado_cita, name='cambiar_estado_cita'),
     path('admin-citas/eliminar/<int:cita_id>/', eliminar_cita_admin, name='eliminar_cita_admin'),
+
+    path('admin-usuarios/', lista_usuarios, name='lista_usuarios'),
+    path('admin-usuarios/nuevo/', crear_usuario, name='crear_usuario'),
+    path('admin-usuarios/editar/<int:usuario_id>/', editar_usuario, name='editar_usuario'),
+    path('admin-usuarios/eliminar/<int:usuario_id>/', eliminar_usuario, name='eliminar_usuario'),
 ]

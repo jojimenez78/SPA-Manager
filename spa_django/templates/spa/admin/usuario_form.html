@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if usuario_admin %}Editar Usuario{% else %}Nuevo Usuario{% endif %} | Spa Relax{% endblock %}
+
+{% block content %}
+<section class="spa-section">
+    <div class="container">
+        <div class="spa-card form-card">
+            <div class="mb-4">
+                <h1 class="page-title mb-2">
+                    {% if usuario_admin %}Editar usuario{% else %}Nuevo usuario{% endif %}
+                </h1>
+                <p class="spa-subtitle mb-0">Actualiza datos personales, permisos de acceso y perfil de contacto.</p>
+            </div>
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        <div>{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold" for="{{ form.username.id_for_label }}">Usuario</label>
+                        {{ form.username }}
+                        {% for error in form.username.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold" for="{{ form.email.id_for_label }}">Correo</label>
+                        {{ form.email }}
+                        {% for error in form.email.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold" for="{{ form.first_name.id_for_label }}">Nombre</label>
+                        {{ form.first_name }}
+                        {% for error in form.first_name.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold" for="{{ form.last_name.id_for_label }}">Apellido</label>
+                        {{ form.last_name }}
+                        {% for error in form.last_name.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold" for="{{ form.password.id_for_label }}">
+                            {% if usuario_admin %}Nueva contrasena{% else %}Contrasena{% endif %}
+                        </label>
+                        {{ form.password }}
+                        {% if usuario_admin %}
+                            <div class="small text-muted mt-1">Dejala en blanco para conservar la contrasena actual.</div>
+                        {% endif %}
+                        {% for error in form.password.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold" for="{{ form.telefono.id_for_label }}">Telefono</label>
+                        {{ form.telefono }}
+                        {% for error in form.telefono.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold" for="{{ form.fecha_nacimiento.id_for_label }}">Fecha de nacimiento</label>
+                        {{ form.fecha_nacimiento }}
+                        {% for error in form.fecha_nacimiento.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold" for="{{ form.direccion.id_for_label }}">Direccion</label>
+                        {{ form.direccion }}
+                        {% for error in form.direccion.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold" for="{{ form.facebook.id_for_label }}">Facebook</label>
+                        {{ form.facebook }}
+                        {% for error in form.facebook.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold" for="{{ form.instagram.id_for_label }}">Instagram</label>
+                        {{ form.instagram }}
+                        {% for error in form.instagram.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="row g-3 my-4">
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            {{ form.is_active }}
+                            <label class="form-check-label" for="{{ form.is_active.id_for_label }}">Usuario activo</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            {{ form.is_staff }}
+                            <label class="form-check-label" for="{{ form.is_staff.id_for_label }}">Acceso admin</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            {{ form.is_superuser }}
+                            <label class="form-check-label" for="{{ form.is_superuser.id_for_label }}">Superusuario</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="submit" class="btn btn-spa-primary">Guardar</button>
+                    <a href="{% url 'lista_usuarios' %}" class="btn btn-soft">Volver</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

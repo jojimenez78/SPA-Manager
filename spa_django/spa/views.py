@@ -3,7 +3,11 @@ from datetime import date
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
+
+from usuarios.forms import AdminUsuarioForm
+from usuarios.models import ClientePerfil
 
 from .forms import CitaForm
 from .models import Cita, Empleado, Servicio
@@ -66,9 +70,15 @@ def dashboard_admin(request):
     hoy = date.today()
 
     total_servicios = Servicio.objects.count()
+    total_servicios_activos = Servicio.objects.filter(activo=True).count()
     total_empleados = Empleado.objects.count()
+    total_empleados_activos = Empleado.objects.filter(activo=True).count()
+    total_usuarios = User.objects.count()
+    total_usuarios_activos = User.objects.filter(is_active=True).count()
+    total_administradores = User.objects.filter(is_staff=True).count()
     total_citas = Cita.objects.count()
     citas_hoy = Cita.objects.filter(fecha=hoy).count()
+    citas_activas = Cita.objects.filter(estado__in=['pendiente', 'confirmada']).count()
 
     citas_pendientes = Cita.objects.filter(estado='pendiente').count()
     citas_confirmadas = Cita.objects.filter(estado='confirmada').count()
@@ -81,9 +91,15 @@ def dashboard_admin(request):
 
     context = {
         'total_servicios': total_servicios,
+        'total_servicios_activos': total_servicios_activos,
         'total_empleados': total_empleados,
+        'total_empleados_activos': total_empleados_activos,
+        'total_usuarios': total_usuarios,
+        'total_usuarios_activos': total_usuarios_activos,
+        'total_administradores': total_administradores,
         'total_citas': total_citas,
         'citas_hoy': citas_hoy,
+        'citas_activas': citas_activas,
         'citas_pendientes': citas_pendientes,
         'citas_confirmadas': citas_confirmadas,
         'citas_completadas': citas_completadas,
@@ -92,6 +108,70 @@ def dashboard_admin(request):
     }
 
     return render(request, 'spa/admin/dashboard.html', context)
+
+
+@staff_member_required
+def lista_usuarios(request):
+    usuarios = User.objects.select_related('clienteperfil').order_by('username')
+    return render(request, 'spa/admin/usuarios_lista.html', {'usuarios': usuarios})
+
+
+@staff_member_required
+def crear_usuario(request):
+    if request.method == 'POST':
+        form = AdminUsuarioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Usuario creado correctamente.")
+            return redirect('lista_usuarios')
+    else:
+        form = AdminUsuarioForm()
+
+    return render(request, 'spa/admin/usuario_form.html', {'form': form})
+
+
+@staff_member_required
+def editar_usuario(request, usuario_id):
+    usuario = get_object_or_404(User, id=usuario_id)
+    perfil, _ = ClientePerfil.objects.get_or_create(
+        user=usuario,
+        defaults={'telefono': '', 'direccion': ''}
+    )
+
+    if request.method == 'POST':
+        form = AdminUsuarioForm(request.POST, instance=usuario, perfil=perfil)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Usuario actualizado correctamente.")
+            return redirect('lista_usuarios')
+    else:
+        form = AdminUsuarioForm(instance=usuario, perfil=perfil)
+
+    return render(request, 'spa/admin/usuario_form.html', {'form': form, 'usuario_admin': usuario})
+
+
+@staff_member_required
+def eliminar_usuario(request, usuario_id):
+    usuario = get_object_or_404(User, id=usuario_id)
+    es_usuario_actual = usuario.id == request.user.id
+
+    if request.method == 'POST':
+        if es_usuario_actual:
+            messages.warning(request, "No puedes eliminar tu propio usuario desde este panel.")
+        else:
+            usuario.delete()
+            messages.error(request, "Usuario eliminado correctamente.")
+
+        return redirect('lista_usuarios')
+
+    return render(
+        request,
+        'spa/admin/usuario_confirmar_eliminar.html',
+        {
+            'usuario_admin': usuario,
+            'es_usuario_actual': es_usuario_actual,
+        }
+    )
 
 
 @staff_member_required

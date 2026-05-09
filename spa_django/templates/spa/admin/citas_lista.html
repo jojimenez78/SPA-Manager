@@ -5,12 +5,23 @@
 {% block content %}
 <section class="spa-section">
     <div class="container">
-        <div class="mb-4">
-            <h1 class="page-title mb-2">Administración de citas</h1>
-            <p class="spa-subtitle mb-0">Consulta, actualiza estados y elimina reservas con una vista ordenada para el personal administrativo.</p>
+        <div class="admin-page-header">
+            <div>
+                <p class="admin-eyebrow mb-2">Administración</p>
+                <h1 class="page-title mb-2">Citas</h1>
+                <p class="spa-subtitle mb-0">Consulta, actualiza estados y elimina reservas con una vista ordenada para el personal administrativo.</p>
+            </div>
+            <a href="{% url 'dashboard_admin' %}" class="btn btn-soft">Volver al dashboard</a>
         </div>
 
-        <div class="spa-card">
+        <div class="admin-panel admin-table-card">
+            <div class="admin-panel-header">
+                <div>
+                    <h2 class="h5 fw-bold mb-1">Agenda administrativa</h2>
+                    <p class="text-muted mb-0">Reservas ordenadas por fecha y hora más recientes.</p>
+                </div>
+            </div>
+
             <div class="table-responsive">
                 <table class="table align-middle">
                     <thead>
@@ -27,7 +38,7 @@
                     <tbody>
                         {% for cita in citas %}
                             <tr>
-                                <td>{{ cita.cliente.username }}</td>
+                                <td><strong>{{ cita.cliente.username }}</strong></td>
                                 <td>{{ cita.servicio.nombre }}</td>
                                 <td>{{ cita.empleado.nombre|default:"Sin asignar" }}</td>
                                 <td>{{ cita.fecha|date:"d/m/Y" }}</td>
@@ -46,7 +57,7 @@
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <div class="d-flex flex-wrap gap-2">
+                                    <div class="admin-actions">
                                         <a href="{% url 'cambiar_estado_cita' cita.id 'confirmada' %}" class="btn btn-sm btn-outline-primary">Confirmar</a>
                                         <a href="{% url 'cambiar_estado_cita' cita.id 'completada' %}" class="btn btn-sm btn-outline-success">Completar</a>
                                         <a href="{% url 'cambiar_estado_cita' cita.id 'cancelada' %}" class="btn btn-sm btn-outline-warning">Cancelar</a>
@@ -56,7 +67,12 @@
                             </tr>
                         {% empty %}
                             <tr>
-                                <td colspan="7" class="text-center py-5 text-muted">No hay citas registradas.</td>
+                                <td colspan="7">
+                                    <div class="admin-empty-state">
+                                        <strong>No hay citas registradas.</strong>
+                                        Las reservas nuevas aparecerán aquí.
+                                    </div>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

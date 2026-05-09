@@ -4,64 +4,356 @@
 
 {% block extra_css %}
 <style>
-    .profile-avatar-card {
+    .profile-shell {
+        padding-top: 3.2rem;
+    }
+
+    .profile-heading {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 1.5rem;
+        margin-bottom: 1.7rem;
+    }
+
+    .profile-kicker {
+        color: var(--spa-gold-deep);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+
+    .profile-side-card {
+        position: sticky;
+        top: 110px;
+        overflow: hidden;
+        padding: 0;
+    }
+
+    .profile-cover {
+        height: 128px;
+        background:
+            linear-gradient(115deg, rgba(18, 48, 71, 0.94), rgba(33, 86, 106, 0.7)),
+            url("https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1200&q=80");
+        background-size: cover;
+        background-position: center;
+    }
+
+    .profile-summary {
+        padding: 0 1.6rem 1.7rem;
         text-align: center;
     }
 
-    .profile-avatar {
-        width: 190px;
-        height: 190px;
+    .profile-photo-wrap {
+        position: relative;
+        width: 164px;
+        height: 164px;
+        margin: -82px auto 1.1rem;
+    }
+
+    .profile-avatar,
+    .profile-avatar-placeholder {
+        width: 164px;
+        height: 164px;
         border-radius: 50%;
+        border: 6px solid var(--spa-cream);
+        box-shadow: 0 18px 44px rgba(17, 34, 51, 0.18);
+    }
+
+    .profile-avatar {
+        display: block;
         object-fit: cover;
-        border: 6px solid rgba(185, 154, 99, 0.24);
-        box-shadow: 0 18px 40px rgba(17, 34, 51, 0.14);
+        background: white;
     }
 
     .profile-avatar-placeholder {
-        width: 190px;
-        height: 190px;
-        margin: 0 auto;
-        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, #123047, #2a587a);
+        background: linear-gradient(135deg, var(--spa-navy), #2f6b72);
         color: white;
-        font-family: "Cormorant Garamond", serif;
+        font-family: var(--spa-display-font);
         font-size: 4rem;
-        border: 6px solid rgba(185, 154, 99, 0.24);
-        box-shadow: 0 18px 40px rgba(17, 34, 51, 0.14);
+        font-weight: 700;
+    }
+
+    .profile-photo-badge {
+        position: absolute;
+        right: 12px;
+        bottom: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--spa-gold);
+        color: white;
+        border: 3px solid var(--spa-cream);
+        font-weight: 800;
+        box-shadow: 0 10px 22px rgba(17, 34, 51, 0.18);
+    }
+
+    .profile-name {
+        font-family: var(--spa-display-font);
+        color: var(--spa-navy);
+        font-size: 2.05rem;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 0.35rem;
+    }
+
+    .profile-username {
+        color: var(--spa-muted);
+        font-size: 0.95rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .profile-completion {
+        margin: 1.3rem 0;
+        text-align: left;
+    }
+
+    .profile-progress {
+        height: 10px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(18, 48, 71, 0.08);
+    }
+
+    .profile-progress span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--spa-gold), #2f6b72);
+    }
+
+    .profile-detail-list {
+        display: grid;
+        gap: 0.75rem;
+        margin-top: 1.2rem;
+        text-align: left;
+    }
+
+    .profile-detail {
+        padding: 0.9rem 1rem;
+        border: 1px solid rgba(18, 48, 71, 0.1);
+        border-radius: 16px;
+        background: rgba(18, 48, 71, 0.035);
+    }
+
+    .profile-detail span {
+        display: block;
+        color: var(--spa-muted);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .profile-detail strong {
+        display: block;
+        margin-top: 0.2rem;
+        color: var(--spa-text);
+        font-size: 0.95rem;
+        overflow-wrap: anywhere;
+    }
+
+    .profile-social-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        margin-top: 1rem;
+    }
+
+    .profile-social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: 0.65rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(185, 154, 99, 0.12);
+        color: var(--spa-navy);
+        font-size: 0.88rem;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .profile-social-link:hover {
+        background: rgba(185, 154, 99, 0.22);
+        color: var(--spa-navy-deep);
+    }
+
+    .profile-social-empty {
+        color: var(--spa-muted);
+        font-size: 0.9rem;
+        margin-top: 1rem;
+    }
+
+    .profile-form-card {
+        padding: 2.1rem;
+    }
+
+    .profile-form-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 1.2rem;
+        padding-bottom: 1.4rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(18, 48, 71, 0.1);
+    }
+
+    .profile-section-title {
+        color: var(--spa-navy);
+        font-size: 1rem;
+        font-weight: 800;
+        margin: 1.2rem 0 0.8rem;
+    }
+
+    .profile-field .form-label {
+        color: var(--spa-navy);
+        font-size: 0.86rem;
+        margin-bottom: 0.45rem;
+    }
+
+    .profile-file-hint {
+        color: var(--spa-muted);
+        font-size: 0.82rem;
+        margin-top: 0.45rem;
+    }
+
+    .profile-actions {
+        position: sticky;
+        bottom: 0;
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 0.7rem;
+        padding-top: 1.4rem;
+        margin-top: 1.6rem;
+        background: linear-gradient(180deg, rgba(255, 253, 248, 0), rgba(255, 253, 248, 0.96) 35%);
+    }
+
+    @media (max-width: 991px) {
+        .profile-heading,
+        .profile-form-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .profile-side-card,
+        .profile-actions {
+            position: static;
+        }
+
+        .profile-form-card {
+            padding: 1.5rem;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<section class="spa-section">
+<section class="spa-section profile-shell">
     <div class="container">
-        <div class="row g-4">
+        <div class="profile-heading">
+            <div>
+                <p class="profile-kicker mb-2">Tu cuenta</p>
+                <h1 class="page-title mb-2">Mi perfil</h1>
+                <p class="spa-subtitle mb-0">Manten tus datos listos para que cada reserva sea mas rapida y personalizada.</p>
+            </div>
+            <a href="{% url 'mis_citas' %}" class="btn btn-soft">Ver mis citas</a>
+        </div>
+
+        <div class="row g-4 align-items-start">
             <div class="col-lg-4">
-                <div class="spa-card profile-avatar-card h-100">
-                    <p class="text-uppercase small fw-bold text-secondary mb-2">Tu cuenta</p>
-                    <h1 class="page-title mb-3">Mi perfil</h1>
-
-                    {% if perfil_usuario.foto %}
-                        <img src="{{ perfil_usuario.foto.url }}" alt="Foto de perfil" class="profile-avatar mb-4">
-                    {% else %}
-                        <div class="profile-avatar-placeholder mb-4">
-                            {{ user.username|slice:":1"|upper }}
+                <aside class="spa-card profile-side-card">
+                    <div class="profile-cover"></div>
+                    <div class="profile-summary">
+                        <div class="profile-photo-wrap">
+                            {% if perfil_usuario.foto %}
+                                <img src="{{ perfil_usuario.foto.url }}" alt="Foto de perfil" class="profile-avatar" id="profileAvatarPreview">
+                            {% else %}
+                                <div class="profile-avatar-placeholder" id="profileAvatarFallback">
+                                    {{ user.username|slice:":1"|upper }}
+                                </div>
+                                <img src="" alt="Vista previa de foto de perfil" class="profile-avatar d-none" id="profileAvatarPreview">
+                            {% endif %}
+                            <span class="profile-photo-badge">+</span>
                         </div>
-                    {% endif %}
 
-                    <p class="spa-subtitle mb-2">Desde aquí puedes actualizar tus datos personales y subir una imagen para tu perfil.</p>
-                    <p class="text-muted mb-0"><strong>Usuario:</strong> {{ user.username }}</p>
-                </div>
+                        <h2 class="profile-name">
+                            {% if user.first_name or user.last_name %}
+                                {{ user.first_name }} {{ user.last_name }}
+                            {% else %}
+                                {{ user.username }}
+                            {% endif %}
+                        </h2>
+                        <p class="profile-username">@{{ user.username }}</p>
+
+                        <div class="profile-completion">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <strong class="small">Perfil</strong>
+                                <span class="small text-muted">
+                                    {% if user.first_name and user.last_name and user.email and perfil_usuario.telefono and perfil_usuario.direccion and perfil_usuario.fecha_nacimiento and perfil_usuario.foto %}
+                                        Completo
+                                    {% else %}
+                                        En progreso
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="profile-progress" aria-hidden="true">
+                                {% if user.first_name and user.last_name and user.email and perfil_usuario.telefono and perfil_usuario.direccion and perfil_usuario.fecha_nacimiento and perfil_usuario.foto %}
+                                    <span style="width: 100%;"></span>
+                                {% else %}
+                                    <span style="width: 70%;"></span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="profile-detail-list">
+                            <div class="profile-detail">
+                                <span>Correo</span>
+                                <strong>{{ user.email|default:"Pendiente" }}</strong>
+                            </div>
+                            <div class="profile-detail">
+                                <span>Telefono</span>
+                                <strong>{{ perfil_usuario.telefono|default:"Pendiente" }}</strong>
+                            </div>
+                            <div class="profile-detail">
+                                <span>Direccion</span>
+                                <strong>{{ perfil_usuario.direccion|default:"Pendiente" }}</strong>
+                            </div>
+                        </div>
+
+                        {% if perfil_usuario.facebook or perfil_usuario.instagram %}
+                            <div class="profile-social-links">
+                                {% if perfil_usuario.facebook %}
+                                    <a href="{{ perfil_usuario.facebook }}" class="profile-social-link" target="_blank" rel="noopener noreferrer">Facebook</a>
+                                {% endif %}
+                                {% if perfil_usuario.instagram %}
+                                    <a href="{{ perfil_usuario.instagram }}" class="profile-social-link" target="_blank" rel="noopener noreferrer">Instagram</a>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <p class="profile-social-empty mb-0">Agrega tus redes sociales para tenerlas a mano en tu perfil.</p>
+                        {% endif %}
+                    </div>
+                </aside>
             </div>
 
             <div class="col-lg-8">
-                <div class="spa-card form-card">
-                    <div class="mb-4">
-                        <h2 class="page-title mb-2">Editar información</h2>
-                        <p class="spa-subtitle mb-0">Guarda tu nombre, correo, foto y datos de contacto en una sola vista.</p>
+                <div class="spa-card profile-form-card">
+                    <div class="profile-form-header">
+                        <div>
+                            <p class="profile-kicker mb-2">Informacion personal</p>
+                            <h2 class="page-title mb-2">Editar datos</h2>
+                            <p class="spa-subtitle mb-0">Los cambios se guardan en tu cuenta y se usaran en tus proximas reservas.</p>
+                        </div>
+                        <a href="{% url 'inicio' %}" class="btn btn-soft">Inicio</a>
                     </div>
 
                     {% if form.non_field_errors %}
@@ -75,8 +367,9 @@
                     <form method="post" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}
 
+                        <h3 class="profile-section-title">Datos de identidad</h3>
                         <div class="row g-3">
-                            <div class="col-md-6">
+                            <div class="col-md-6 profile-field">
                                 <label class="form-label fw-semibold" for="{{ form.first_name.id_for_label }}">Nombre</label>
                                 {{ form.first_name }}
                                 {% for error in form.first_name.errors %}
@@ -84,7 +377,7 @@
                                 {% endfor %}
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 profile-field">
                                 <label class="form-label fw-semibold" for="{{ form.last_name.id_for_label }}">Apellido</label>
                                 {{ form.last_name }}
                                 {% for error in form.last_name.errors %}
@@ -92,40 +385,44 @@
                                 {% endfor %}
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold" for="{{ form.email.id_for_label }}">Correo electrónico</label>
+                            <div class="col-md-6 profile-field">
+                                <label class="form-label fw-semibold" for="{{ form.email.id_for_label }}">Correo electronico</label>
                                 {{ form.email }}
                                 {% for error in form.email.errors %}
                                     <div class="text-danger small mt-1">{{ error }}</div>
                                 {% endfor %}
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold" for="{{ form.telefono.id_for_label }}">Teléfono</label>
-                                {{ form.telefono }}
-                                {% for error in form.telefono.errors %}
-                                    <div class="text-danger small mt-1">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-
-                            <div class="col-md-6">
+                            <div class="col-md-6 profile-field">
                                 <label class="form-label fw-semibold" for="{{ form.fecha_nacimiento.id_for_label }}">Fecha de nacimiento</label>
                                 {{ form.fecha_nacimiento }}
                                 {% for error in form.fecha_nacimiento.errors %}
                                     <div class="text-danger small mt-1">{{ error }}</div>
                                 {% endfor %}
                             </div>
+                        </div>
 
-                            <div class="col-md-6">
+                        <h3 class="profile-section-title">Contacto y preferencias</h3>
+                        <div class="row g-3">
+                            <div class="col-md-6 profile-field">
+                                <label class="form-label fw-semibold" for="{{ form.telefono.id_for_label }}">Telefono</label>
+                                {{ form.telefono }}
+                                {% for error in form.telefono.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6 profile-field">
                                 <label class="form-label fw-semibold" for="{{ form.foto.id_for_label }}">Foto de perfil</label>
                                 {{ form.foto }}
+                                <div class="profile-file-hint">La vista previa se actualiza al seleccionar una imagen.</div>
                                 {% for error in form.foto.errors %}
                                     <div class="text-danger small mt-1">{{ error }}</div>
                                 {% endfor %}
                             </div>
 
-                            <div class="col-12">
-                                <label class="form-label fw-semibold" for="{{ form.direccion.id_for_label }}">Dirección</label>
+                            <div class="col-12 profile-field">
+                                <label class="form-label fw-semibold" for="{{ form.direccion.id_for_label }}">Direccion</label>
                                 {{ form.direccion }}
                                 {% for error in form.direccion.errors %}
                                     <div class="text-danger small mt-1">{{ error }}</div>
@@ -133,9 +430,28 @@
                             </div>
                         </div>
 
-                        <div class="d-flex flex-wrap gap-2 mt-4">
+                        <h3 class="profile-section-title">Redes sociales</h3>
+                        <div class="row g-3">
+                            <div class="col-md-6 profile-field">
+                                <label class="form-label fw-semibold" for="{{ form.facebook.id_for_label }}">Facebook</label>
+                                {{ form.facebook }}
+                                {% for error in form.facebook.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6 profile-field">
+                                <label class="form-label fw-semibold" for="{{ form.instagram.id_for_label }}">Instagram</label>
+                                {{ form.instagram }}
+                                {% for error in form.instagram.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="profile-actions">
+                            <a href="{% url 'mis_citas' %}" class="btn btn-soft">Mis citas</a>
                             <button type="submit" class="btn btn-spa-primary">Guardar perfil</button>
-                            <a href="{% url 'inicio' %}" class="btn btn-soft">Volver al inicio</a>
                         </div>
                     </form>
                 </div>
@@ -143,4 +459,31 @@
         </div>
     </div>
 </section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const fileInput = document.querySelector("input[type='file'][name='foto']");
+        const preview = document.getElementById("profileAvatarPreview");
+        const fallback = document.getElementById("profileAvatarFallback");
+
+        if (!fileInput || !preview) {
+            return;
+        }
+
+        fileInput.addEventListener("change", function () {
+            const file = fileInput.files && fileInput.files[0];
+
+            if (!file || !file.type.startsWith("image/")) {
+                return;
+            }
+
+            preview.src = URL.createObjectURL(file);
+            preview.classList.remove("d-none");
+
+            if (fallback) {
+                fallback.classList.add("d-none");
+            }
+        });
+    });
+</script>
 {% endblock %}
