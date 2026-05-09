@@ -1,0 +1,15 @@
+[Unit]
+Description=Gunicorn para spa_django
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/srv/spa_django
+EnvironmentFile=/etc/spa_django.env
+ExecStart=/srv/spa_django/venv/bin/gunicorn --workers 3 --bind unix:/run/spa_django/spa_django.sock config.wsgi:application
+RuntimeDirectory=spa_django
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
